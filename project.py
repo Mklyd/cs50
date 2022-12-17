@@ -1,144 +1,37 @@
 import requests
 import json
 
-
 def main():
     data_movie()
-    data_anime()
     data_book()
     data_hobby()
 
 
 def data_movie():
-    url = "https://movies-and-serials-torrent.p.rapidapi.com/movies/latest"
-
-    headers = {
-        "X-RapidAPI-Key": "64bdc001f8msh7dbadeed104717ap10f90fjsnad82447fbf98",
-        "X-RapidAPI-Host": "movies-and-serials-torrent.p.rapidapi.com"
-    }
-
-    response = requests.request("GET", url, headers=headers)
-    response_text = json.loads(response.text)
-    response_text_title = []
-    response_text_genres = []
-    response_text_genre_action_title = []
-    response_text_genre_romance_title = []
-    response_text_genre_drama_title = []
-    response_text_genre_any_title = []
-    response_text_img = []
-    response_text_action_img = []
-    response_text_romance_img = []
-    response_text_drama_img = []
-
-    for i in response_text['data']['movies']:
-        response_text_title.append(i['title'])
-        response_text_genres.append(i['genres'])
-        response_text_img.append(i['small_cover_image'])
-
-    for j in range(len(response_text_genres)):
-        if 'Action' in response_text_genres[j]:
-            response_text_genre_action_title.append(response_text_title[j])
-            response_text_action_img.append(response_text_img[j])
-        if 'Romance' in response_text_genres[j]:
-            response_text_genre_romance_title.append(response_text_title[j])
-            response_text_romance_img.append(response_text_img[j])
-        if 'Drama' in response_text_genres[j]:
-            response_text_genre_drama_title.append(response_text_title[j])
-            response_text_drama_img.append(response_text_img[j])
-        else:
-            response_text_genre_any_title.append(response_text_title[j])
-
-    return [response_text_title, response_text_genre_action_title, response_text_genre_romance_title,
-            response_text_genre_drama_title, response_text_genre_any_title, response_text_action_img,
-            response_text_romance_img, response_text_drama_img]
-
-
-def data_anime():
-    url_romance = "https://animes3.p.rapidapi.com/romance"
-
-    headers = {
-        "X-RapidAPI-Key": "64bdc001f8msh7dbadeed104717ap10f90fjsnad82447fbf98",
-        "X-RapidAPI-Host": "animes3.p.rapidapi.com"
-    }
-
-    response_text_genre_romance = requests.request("GET", url_romance, headers=headers)
-    response_text_genre_romance = json.loads(response_text_genre_romance.text)
-
-    url_drama = "https://animes3.p.rapidapi.com/drama"
-
-    headers = {
-        "X-RapidAPI-Key": "64bdc001f8msh7dbadeed104717ap10f90fjsnad82447fbf98",
-        "X-RapidAPI-Host": "animes3.p.rapidapi.com"
-    }
-
-    response_text_genre_drama = requests.request("GET", url_drama, headers=headers)
-    response_text_genre_drama = json.loads(response_text_genre_drama.text)
-
-    url_action = "https://animes3.p.rapidapi.com/action"
-
-    headers = {
-        "X-RapidAPI-Key": "64bdc001f8msh7dbadeed104717ap10f90fjsnad82447fbf98",
-        "X-RapidAPI-Host": "animes3.p.rapidapi.com"
-    }
-
-    response_text_genre_action = requests.request("GET", url_action, headers=headers)
-    response_text_genre_action = json.loads(response_text_genre_action.text)
-
-    response_text_genre_romance_title = [element['title'] for element in response_text_genre_romance]
-    response_text_genre_drama_title = [element['title'] for element in response_text_genre_drama]
-    response_text_genre_action_title = [element['title'] for element in response_text_genre_action]
-
-    response_text_genre_romance_img = [element['img'] for element in response_text_genre_romance]
-    response_text_genre_drama_img = [element['img'] for element in response_text_genre_drama]
-    response_text_genre_action_img = [element['img'] for element in response_text_genre_action]
-
-    return [[response_text_genre_romance_title, response_text_genre_drama_title, response_text_genre_action_title],
-            [response_text_genre_romance_img, response_text_genre_drama_img, response_text_genre_action_img]]
-
-
+    try:
+        with open('movie_data.json') as movie_data_json:
+            movie_data = json.loads(movie_data_json.read())
+        movie_genre_action_title = {element['title']: element['image'] for element in movie_data if element['genre'] == 'action'}
+        movie_genre_fantasy_title = {element['title']: element['image'] for element in movie_data if element['genre'] == 'fantasy'}
+        movie_genre_drama_title = {element['title']: element['image'] for element in movie_data if element['genre'] == 'drama'}
+        movie_genre_romance_title = {element['title']: element['image'] for element in movie_data if element['genre'] == 'romance'}
+        movie_genre_animation_title = {element['title']: element['image'] for element in movie_data if element['genre'] == 'animation'}
+        return (movie_genre_action_title, movie_genre_fantasy_title, movie_genre_drama_title,
+                movie_genre_romance_title, movie_genre_animation_title)
+    except TypeError:
+        print('TypeError')
 def data_book():
-    url_romance = "https://hapi-books.p.rapidapi.com/week/Romance"
-
-    headers = {
-        "X-RapidAPI-Key": "64bdc001f8msh7dbadeed104717ap10f90fjsnad82447fbf98",
-        "X-RapidAPI-Host": "hapi-books.p.rapidapi.com"
-    }
-
-    response_text_genre_romance = requests.request("GET", url_romance, headers=headers)
-    response_text_genre_romance = json.loads(response_text_genre_romance.text)
-
-    url_horror = "https://hapi-books.p.rapidapi.com/week/horror"
-
-    headers = {
-        "X-RapidAPI-Key": "64bdc001f8msh7dbadeed104717ap10f90fjsnad82447fbf98",
-        "X-RapidAPI-Host": "hapi-books.p.rapidapi.com"
-    }
-
-    response_text_genre_horror = requests.request("GET", url_horror, headers=headers)
-    response_text_genre_horror = json.loads(response_text_genre_horror.text)
-
-    url_detective = "https://hapi-books.p.rapidapi.com/week/detective"
-
-    headers = {
-        "X-RapidAPI-Key": "64bdc001f8msh7dbadeed104717ap10f90fjsnad82447fbf98",
-        "X-RapidAPI-Host": "hapi-books.p.rapidapi.com"
-    }
-
-    response_text_genre_detective = requests.request("GET", url_detective, headers=headers)
-    response_text_genre_detective = json.loads(response_text_genre_detective.text)
-
-    response_text_genre_romance_title = [element['name'] for element in response_text_genre_romance]
-    response_text_genre_horror_title = [element['name'] for element in response_text_genre_horror]
-    response_text_genre_detective_title = [element['name'] for element in response_text_genre_detective]
-
-    response_text_genre_romance_img = [element['cover'] for element in response_text_genre_romance]
-    response_text_genre_horror_img = [element['cover'] for element in response_text_genre_horror]
-    response_text_genre_detective_img = [element['cover'] for element in response_text_genre_detective]
-
-    return [[response_text_genre_romance_title, response_text_genre_horror_title, response_text_genre_detective_title],
-            [response_text_genre_romance_img, response_text_genre_horror_img, response_text_genre_detective_img]]
-
-
+    try:
+        with open('book_data.json') as book_data_json:
+            book_data = json.loads(book_data_json.read())
+        book_genre_novel_title = {element['title']: element['author'] for element in book_data if element['genre'] == 'novel'}
+        book_genre_childrens_lit_title = {element['title']: element['author'] for element in book_data if element['genre'] == "children's literature"}
+        book_genre_poetry_title = {element['title']: element['author'] for element in book_data if element['genre'] == 'poetry'}
+        book_genre_tragedy_title = {element['title']: element['author'] for element in book_data if element['genre'] == 'tragedy'}
+        return (book_genre_childrens_lit_title,book_genre_novel_title,  book_genre_poetry_title,
+                book_genre_tragedy_title)
+    except TypeError:
+        print('TypeError')
 def data_hobby():
     url_general = "https://hobbies-by-api-ninjas.p.rapidapi.com/v1/hobbies"
 
