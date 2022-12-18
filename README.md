@@ -1,5 +1,5 @@
 # WSID
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/5qICCFzCuMw
 ### Description:
 
 *Introduction:*
