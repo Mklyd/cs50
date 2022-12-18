@@ -9,7 +9,7 @@ def main():
 
 def data_movie():
     try:
-        with open('data/movie_data.json') as movie_data_json:
+        with open('movie_data.json') as movie_data_json:
             movie_data = json.loads(movie_data_json.read())
         movie_genre_action_title = {element['title']: element['image'] for element in movie_data if element['genre'] == 'action'}
         movie_genre_fantasy_title = {element['title']: element['image'] for element in movie_data if element['genre'] == 'fantasy'}
@@ -22,7 +22,7 @@ def data_movie():
         print('TypeError')
 def data_book():
     try:
-        with open('data/book_data.json') as book_data_json:
+        with open('book_data.json') as book_data_json:
             book_data = json.loads(book_data_json.read())
         book_genre_novel_title = {element['title']: element['author'] for element in book_data if element['genre'] == 'novel'}
         book_genre_childrens_lit_title = {element['title']: element['author'] for element in book_data if element['genre'] == "children's literature"}
